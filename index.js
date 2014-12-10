@@ -20,7 +20,6 @@ function modelBase(bookshelf, params) {
     }, {
 
       // snake_case db columns -> camelCase attributes
-      // TODO: replace with lodash v3.0.0 _.camelCase
       _parse: function (response) {
         return  _.reduce(response, function (memo, val, key) {
           memo[_.str.camelize(key)] = val;
