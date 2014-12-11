@@ -1,4 +1,6 @@
-#ModelBase
+ModelBase ![Build Status](https://travis-ci.org/graysonc/modelbase.svg?branch=master)
+=========
+
 
 ##Usage
 ```javascript
