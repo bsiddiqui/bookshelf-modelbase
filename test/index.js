@@ -1,4 +1,5 @@
 var Joi       = require('joi');
+var sinon     = require('sinon');
 var mocha     = require('mocha');
 var chai      = require('chai'),
     expect    = chai.expect;
@@ -7,31 +8,48 @@ var db        = require('./db');
     ModelBase = require('../index')(bookshelf);
 
 describe('model base', function () {
-  describe('_parse', function () {
+  var specimen;
+
+  beforeEach(function () {
+    var specimenClass = ModelBase.extend({}, {
+      validation: {
+        a: Joi.string().valid('test')
+      }
+    });
+    specimen = new ModelBase({ name: 'hello' }, {
+      validation: { name: Joi.string().valid('hello') }
+    });
+  });
+
+  describe('parse', function () {
     it('should convert snake case to camel case', function () {
-      expect(ModelBase._parse({ variable_name: 'snake_case' }))
+      expect(specimen.parse({ variable_name: 'snake_case' }))
         .to.eql({ variableName: 'snake_case' })
     });
   });
 
-  describe('_format', function () {
+  describe('format', function () {
     it('should convert camel case to snake case', function () {
-      expect(ModelBase._format({ variableName: 'snake_case' }))
+      expect(specimen.format({ variableName: 'snake_case' }))
         .to.eql({ variable_name: 'snake_case' })
     });
   });
 
   describe('validateSave', function () {
     it('should validate own attributes', function () {
-      var specimen = new ModelBase({ a: 'hello' }, {
-        validation: { a: Joi.string().valid('hello') }
+      expect(specimen.validateSave()).to.contain({
+        name: 'hello'
       });
 
-      expect(specimen.validateSave().value).to.eql(specimen.attributes);
+      specimen.set('name', 1);
+      return expect(specimen.validateSave).to.throw()
+    });
+  });
 
-      specimen.set('a', 1);
-
-      expect(specimen.validateSave().error).to.be.ok();
+  describe('constructor', function () {
+    it('should itself be extensible', function () {
+      expect(ModelBase.extend({ tableName: 'test' }))
+        .to.itself.respondTo('extend');
     });
   });
 });

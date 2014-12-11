@@ -4,7 +4,7 @@
   "description": "Extensible ModelBase for bookshelf-based model layers",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "mocha test/**"
   },
   "author": "Grayson Chao",
   "license": "MIT",
@@ -17,6 +17,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.0.1",
+    "sinon": "^1.12.1",
     "sqlite3": "^3.0.4"
   }
 }
