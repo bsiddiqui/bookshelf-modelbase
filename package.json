@@ -1,5 +1,5 @@
 {
-  "name": "model-base",
+  "name": "bookshelf-modelbase",
   "version": "0.0.0",
   "description": "Extensible ModelBase for bookshelf-based model layers",
   "main": "index.js",

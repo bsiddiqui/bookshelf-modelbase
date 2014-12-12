@@ -7,7 +7,7 @@ ModelBase ![Build Status](https://travis-ci.org/graysonc/modelbase.svg?branch=ma
 var db        = require(knex)(require('./knexfile'));
 var bookshelf = require('bookshelf')(db);
 // Pass an initialized bookshelf instance
-var ModelBase = require('model-base')(bookshelf);
+var ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 var User = ModelBase.extend({
 }, {
