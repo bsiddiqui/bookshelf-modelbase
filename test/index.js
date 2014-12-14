@@ -5,7 +5,7 @@ var chai      = require('chai'),
     expect    = chai.expect;
 var db        = require('./db');
     bookshelf = require('bookshelf')(db);
-    ModelBase = require('../index')(bookshelf);
+    ModelBase = require('../lib/index')(bookshelf);
 
 describe('model base', function () {
   var specimen;

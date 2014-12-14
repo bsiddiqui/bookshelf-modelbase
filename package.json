@@ -2,7 +2,7 @@
   "name": "bookshelf-modelbase",
   "version": "0.0.0",
   "description": "Extensible ModelBase for bookshelf-based model layers",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/**"
   },
@@ -12,7 +12,8 @@
     "bluebird": "^2.3.11",
     "bookshelf": "^0.7.9",
     "joi": "^5.0.2",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "underscore.string": "^2.4.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
