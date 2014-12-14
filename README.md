@@ -1,4 +1,4 @@
-ModelBase ![Build Status](https://travis-ci.org/graysonc/modelbase.svg?branch=master)
+ModelBase ![Build Status](https://travis-ci.org/bsiddiqui/bookshelf-modelbase.svg?branch=master)
 =========
 
 
