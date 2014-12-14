@@ -22,7 +22,7 @@ your bookshelf instance that will break `bookshelf-modelbase`.
 * Adds timestamps (`createdAt` and `updatedAt`)
 
 * Validate own attributes on save using [Joi](https://github.com/hapijs/joi).
-You can pass in a validation as a class attribute when you extend
+You can pass in a validation object as a class attribute when you extend
 `bookshelf-modelbase` - see below for usage.
 
 * Writes attributes to the db as `snake_case`,
@@ -38,6 +38,6 @@ var ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 var User = ModelBase.extend({
 }, {
-  validation: [Joi validation object]
+  validation: <Joi validation object, defaults to Joi.any()>
 })
 ```
