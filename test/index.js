@@ -1,25 +1,35 @@
 var Joi       = require('joi');
 var sinon     = require('sinon');
 var mocha     = require('mocha');
-var chai      = require('chai'),
-    expect    = chai.expect;
+var chai      = require('chai');
+var expect    = chai.expect;
 var db        = require('./db');
-    bookshelf = require('bookshelf')(db);
-    ModelBase = require('../lib/index')(bookshelf);
+var bookshelf = require('bookshelf')(db);
+var ModelBase = require('../lib/index')(bookshelf);
 
-describe('model base', function () {
+describe('modelBase', function () {
   var specimen;
 
   beforeEach(function () {
-    var specimenClass = ModelBase.extend({}, {
-      validation: {
-        a: Joi.string().valid('test')
-      }
-    });
-    specimen = new ModelBase({ name: 'hello' }, {
+    specimenClass = ModelBase.extend({
       validation: { name: Joi.string().valid('hello') }
     });
+    specimen = new specimenClass({ name: 'hello' });
   });
+
+  describe('initialize', function () {
+    it('should error if not passed bookshelf object', function () {
+      expect(function () {
+        require('../lib/index')();
+      }).to.throw(/Must pass an initialized bookshelf instance/);
+    });
+
+    it('should default to any validation', function () {
+      specimen = new ModelBase();
+      expect(specimen.validation.isJoi).to.eql(true);
+      expect(specimen.validation._type).to.eql('any');
+    });
+  })
 
   describe('parse', function () {
     it('should convert snake case to camel case', function () {
@@ -40,9 +50,13 @@ describe('model base', function () {
       expect(specimen.validateSave()).to.contain({
         name: 'hello'
       });
+    });
 
+    it('should error on invalid attributes', function () {
       specimen.set('name', 1);
-      return expect(specimen.validateSave).to.throw()
+      expect(function () {
+        specimen.validateSave();
+      }).to.throw(/ValidationError/);
     });
   });
 
