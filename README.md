@@ -1,5 +1,5 @@
-ModelBase ![Build Status](https://travis-ci.org/bsiddiqui/bookshelf-modelbase.svg?branch=master)
-=========
+ModelBase ![Build Status](https://travis-ci.org/bsiddiqui/bookshelf-modelbase.svg?branch=master) [![Code Climate](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase/badges/gpa.svg)](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase) [![Test Coverage](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase/badges/coverage.svg)](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase) [![npm version](https://badge.fury.io/js/bookshelf-modelbase.svg)](http://badge.fury.io/js/bookshelf-modelbase)
+==========
 
 ##Why
 [Bookshelf.js](https://github.com/tgriesser/bookshelf) is awesome. However,
