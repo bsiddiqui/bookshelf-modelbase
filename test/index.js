@@ -23,21 +23,21 @@ describe('model base', function () {
 
   describe('parse', function () {
     it('should convert snake case to camel case', function () {
-      expect(specimen.parse({ variable_name: 'snake_case' }))
+      return expect(specimen.parse({ variable_name: 'snake_case' }))
         .to.eql({ variableName: 'snake_case' })
     });
   });
 
   describe('format', function () {
     it('should convert camel case to snake case', function () {
-      expect(specimen.format({ variableName: 'snake_case' }))
+      return expect(specimen.format({ variableName: 'snake_case' }))
         .to.eql({ variable_name: 'snake_case' })
     });
   });
 
   describe('validateSave', function () {
     it('should validate own attributes', function () {
-      expect(specimen.validateSave()).to.contain({
+      return expect(specimen.validateSave()).to.contain({
         name: 'hello'
       });
 
@@ -48,7 +48,7 @@ describe('model base', function () {
 
   describe('constructor', function () {
     it('should itself be extensible', function () {
-      expect(ModelBase.extend({ tableName: 'test' }))
+      return expect(ModelBase.extend({ tableName: 'test' }))
         .to.itself.respondTo('extend');
     });
   });
