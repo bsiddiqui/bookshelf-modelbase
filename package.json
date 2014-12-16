@@ -2,12 +2,20 @@
   "name": "bookshelf-modelbase",
   "version": "1.2.0",
   "description": "Extensible ModelBase for bookshelf-based model layers",
-  "main": "lib/index.js",
+  "main": "./lib",
   "scripts": {
-    "test": "mocha test/**"
+    "test": "istanbul cover _mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bsiddiqui/bookshelf-modelbase.git"
   },
   "author": "Grayson Chao",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bsiddiqui/bookshelf-modelbase/issues"
+  },
+  "homepage": "https://github.com/bsiddiqui/bookshelf-modelbase",
   "dependencies": {
     "bluebird": "^2.3.11",
     "bookshelf": "^0.7.9",
@@ -17,6 +25,7 @@
   },
   "devDependencies": {
     "chai": "^1.10.0",
+    "istanbul": "^0.3.5",
     "knex": "^0.7.3",
     "mocha": "^2.0.1",
     "sinon": "^1.12.1",
