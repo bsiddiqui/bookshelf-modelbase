@@ -11,10 +11,9 @@ describe('modelBase', function () {
   var specimen;
 
   beforeEach(function () {
-    specimenClass = ModelBase.extend({
-      validation: { name: Joi.string().valid('hello') }
+    specimen = new ModelBase({ name: 'hello' }, {
+      validate: { name: Joi.string().valid('hello') }
     });
-    specimen = new specimenClass({ name: 'hello' });
   });
 
   describe('initialize', function () {
@@ -24,10 +23,10 @@ describe('modelBase', function () {
       }).to.throw(/Must pass an initialized bookshelf instance/);
     });
 
-    it('should default to any validation', function () {
+    it('should default to any validate', function () {
       specimen = new ModelBase();
-      expect(specimen.validation.isJoi).to.eql(true);
-      expect(specimen.validation._type).to.eql('any');
+      expect(specimen.validate.isJoi).to.eql(true);
+      expect(specimen.validate._type).to.eql('any');
     });
   })
 
