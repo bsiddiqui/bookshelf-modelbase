@@ -12,9 +12,12 @@ describe('modelBase', function () {
 
   beforeEach(function () {
     specimenClass = ModelBase.extend({
-      validation: { name: Joi.string().valid('hello') }
+      validate: { name: Joi.string().valid('hello') }
     });
-    specimen = new specimenClass({ name: 'hello' });
+
+    specimen = new specimenClass({
+      name: 'hello'
+    });
   });
 
   describe('initialize', function () {
