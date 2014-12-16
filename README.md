@@ -28,6 +28,7 @@ You can pass in a validation object as a class attribute when you extend
 * Writes attributes to the db as `snake_case`,
 but exposes them in code as `camelCase`.
 
+* Naive CRUD methods - `findAll`, `findOne`, `create`, `update`, and `destroy`
 
 ##Usage
 ```javascript
