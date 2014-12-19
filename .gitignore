@@ -28,4 +28,4 @@ node_modules
 .lock-wscript
 
 # Development DB
-db/dev.sqlite3
+test/dev.sqlite3

@@ -25,6 +25,8 @@ describe('modelBase', function () {
     specimen = new specimenClass({
       name: 'hello'
     });
+
+    return specimen.save();
   });
 
   describe('initialize', function () {
