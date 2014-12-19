@@ -38,12 +38,32 @@ var bookshelf = require('bookshelf')(db);
 var ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 var User = ModelBase.extend({
+  tableName: 'users'
 }, {
   // validation is passed to Joi.object(), so use a raw object
   validate: {
     firstName: Joi.string()
   }
+});
+
+User.create({ firstName: 'Grayson' })
+.then(function () {
+  return User.findOne({ firstName: 'Grayson' }, { require: true });
 })
+.then(function (grayson) {
+  // passes patch: true to .save() by default
+  return User.update({ firstName: 'Basil' }, { id: grayson.id });
+})
+.then(function (basil) {
+  return User.destroy({ id: basil.id });
+})
+.then(function () {
+  return User.findAll();
+})
+.then(function (collection) {
+  console.log(collection.models.length); // => 0
+})
+
 ```
 
 ### CRUD
