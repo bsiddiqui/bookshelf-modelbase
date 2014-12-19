@@ -38,10 +38,91 @@ var bookshelf = require('bookshelf')(db);
 var ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 var User = ModelBase.extend({
+  tableName: 'users'
 }, {
   // validation is passed to Joi.object(), so use a raw object
   validate: {
     firstName: Joi.string()
   }
+});
+
+User.create({ firstName: 'Grayson' })
+.then(function () {
+  return User.findOne({ firstName: 'Grayson' }, { require: true });
 })
+.then(function (grayson) {
+  // passes patch: true to .save() by default
+  return User.update({ firstName: 'Basil' }, { id: grayson.id });
+})
+.then(function (basil) {
+  return User.destroy({ id: basil.id });
+})
+.then(function () {
+  return User.findAll();
+})
+.then(function (collection) {
+  console.log(collection.models.length); // => 0
+})
+
+```
+
+### CRUD
+```javascript
+/**
+  * Naive findAll - fetches all data for `this`
+  * @param {Object} options (optional)
+  * @return {Promise(bookshelf.Collection)} Bookshelf Collection of all Models
+  */
+findAll: function (options) {
+  return bookshelf.Collection.forge([], { model: this }).fetch(options);
+},
+
+/**
+  * Naive findOne - fetch data for `this` matching data
+  * @param {Object} data
+  * @param {Object} options (optional)
+  * @return {Promise(bookshelf.Model)} single Model
+  */
+findOne: function (data, options) {
+  return this.forge(data).fetch(options);
+},
+
+/**
+  * Naive add - create and save a model based on data
+  * @param {Object} data
+  * @param {Object} options (optional)
+  * @return {Promise(bookshelf.Model)} single Model
+  */
+create: function (data, options) {
+  return this.forge(data)
+  .save(null, options);
+},
+
+/**
+  * Naive update - update a model based on data
+  * @param {Object} data
+  * @param {Object} options
+  * @return {Promise(bookshelf.Model)} edited Model
+  */
+update: function (data, options) {
+  _.defaults(options, {
+    patch: true
+  });
+  return this.forge({ id: options.id }).fetch(options)
+  .then(function (model) {
+    if (model) {
+      return model.save(data, options);
+    }
+  })
+},
+
+/**
+  * Naive destroy
+  * @param {Object} options
+  * @return {Promise(bookshelf.Model)} empty Model
+  */
+destroy: function (options) {
+  return this.forge({ id: options.id })
+  .destroy(options);
+}
 ```
