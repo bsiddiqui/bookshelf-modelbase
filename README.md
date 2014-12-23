@@ -1,5 +1,5 @@
-ModelBase [![Build Status](https://travis-ci.org/enjoy/bookshelf-modelbase.svg?branch=master)](https://travis-ci.org/enjoy/bookshelf-modelbase) [![Code Climate](https://codeclimate.com/github/enjoy/bookshelf-modelbase/badges/gpa.svg)](https://codeclimate.com/github/enjoy/bookshelf-modelbase) [![Test Coverage](https://codeclimate.com/github/enjoy/bookshelf-modelbase/badges/coverage.svg)](https://codeclimate.com/github/enjoy/bookshelf-modelbase) [![npm version](https://badge.fury.io/js/bookshelf-modelbase.svg)](http://badge.fury.io/js/bookshelf-modelbase)
-==========
+#bookshelf-modelbase
+[![Build Status](https://travis-ci.org/enjoy/bookshelf-modelbase.svg?branch=master)](https://travis-ci.org/enjoy/bookshelf-modelbase) [![Code Climate](https://codeclimate.com/github/enjoy/bookshelf-modelbase/badges/gpa.svg)](https://codeclimate.com/github/enjoy/bookshelf-modelbase) [![Test Coverage](https://codeclimate.com/github/enjoy/bookshelf-modelbase/badges/coverage.svg)](https://codeclimate.com/github/enjoy/bookshelf-modelbase) [![Version](https://badge.fury.io/js/bookshelf-modelbase.svg)](http://badge.fury.io/js/bookshelf-modelbase) [![Downloads](http://img.shields.io/npm/dm/bookshelf-modelbase.svg)](https://www.npmjs.com/package/bookshelf-modelbase)
 
 ##Why
 [Bookshelf.js](https://github.com/tgriesser/bookshelf) is awesome. However,
