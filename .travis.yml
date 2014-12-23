@@ -3,4 +3,4 @@ node_js:
   - '0.10'
 after_script:
   - npm install -g codeclimate-test-reporter
-  - CODECLIMATE_REPO_TOKEN=be81a850806bfaf0ea98cbd38daef658481d1bbcf04886de925b8c043eb0c20e codeclimate < ./coverage/lcov.info
+  - CODECLIMATE_REPO_TOKEN=307861fd064d67cceb1400de95d9bdc57f6c27708cf674ac523c00a62e4601bc codeclimate < ./coverage/lcov.info
