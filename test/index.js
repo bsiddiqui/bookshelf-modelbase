@@ -19,7 +19,9 @@ describe('modelBase', function () {
   beforeEach(function () {
     specimenClass = ModelBase.extend({
       tableName: 'test_table',
-      validate: { name: Joi.string().valid('hello', 'goodbye') }
+      validate: {
+        name: Joi.string().valid('hello', 'goodbye')
+      }
     });
 
     specimen = new specimenClass({
@@ -144,6 +146,24 @@ describe('modelBase', function () {
       })
       .then(function (model) {
         return expect(model).to.eql(null);
+      });
+    });
+  });
+
+  describe('findOrCreate', function () {
+    it('should find an existing model', function () {
+      return specimenClass.findOrCreate()
+      .then(function (model) {
+        expect(model).to.be.instanceof(specimenClass);
+      });
+    });
+
+    it('should create when model not found', function () {
+      return specimenClass.findOrCreate({
+        name: 'goodbye'
+      })
+      .then(function (model) {
+        return expect(model.id).to.not.eql(specimen.id);
       });
     });
   });
