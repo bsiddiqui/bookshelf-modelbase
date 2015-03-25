@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/enjoy/bookshelf-modelbase.git"
+    "url": "git://github.com/bsiddiqui/bookshelf-modelbase.git"
   },
-  "author": "Enjoy",
+  "author": "Basil Siddiqui <basil.siddiqui@gmail.com>, Grayson Chao <grayson.chao@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/enjoy/bookshelf-modelbase/issues"
+    "url": "https://github.com/bsiddiqui/bookshelf-modelbase/issues"
   },
-  "homepage": "https://github.com/enjoy/bookshelf-modelbase",
+  "homepage": "https://github.com/bsiddiqui/bookshelf-modelbase",
   "dependencies": {
     "bluebird": "^2.3.11",
     "bookshelf": "^0.7.9",
