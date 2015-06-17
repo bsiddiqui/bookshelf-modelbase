@@ -1,7 +1,7 @@
-#bookshelf-modelbase
+# bookshelf-modelbase
 [![Build Status](https://travis-ci.org/bsiddiqui/bookshelf-modelbase.svg?branch=master)](https://travis-ci.org/bsiddiqui/bookshelf-modelbase) [![Code Climate](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase/badges/gpa.svg)](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase) [![Test Coverage](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase/badges/coverage.svg)](https://codeclimate.com/github/bsiddiqui/bookshelf-modelbase) [![Version](https://badge.fury.io/js/bookshelf-modelbase.svg)](http://badge.fury.io/js/bookshelf-modelbase) [![Downloads](http://img.shields.io/npm/dm/bookshelf-modelbase.svg)](https://www.npmjs.com/package/bookshelf-modelbase)
 
-##Why
+## Why
 [Bookshelf.js](https://github.com/tgriesser/bookshelf) is awesome. However,
 we found ourselves extending `bookshelf.Model` for the same reasons over and
 over - parsing and formatting (to and from DB) niceties, adding timestamps, and
@@ -28,9 +28,9 @@ You can pass in a validation object as a class attribute when you extend
 * Writes attributes to the db as `snake_case`,
 but exposes them in code as `camelCase`.
 
-* Naive CRUD methods - `findAll`, `findOne`, `create`, `update`, and `destroy`
+* Naive CRUD methods - `findAll`, `findOne`, `findOrCreate`, `create`, `update`, and `destroy`
 
-##Usage
+## Usage
 ```javascript
 var db        = require(knex)(require('./knexfile'));
 var bookshelf = require('bookshelf')(db);
@@ -66,7 +66,20 @@ User.create({ firstName: 'Grayson' })
 
 ```
 
-### CRUD
+### API
+
+#### model.create
+
+#### model.destroy
+
+#### model.findAll
+
+#### model.findOne
+
+#### model.findOrCreate
+
+#### model.update
+
 ```javascript
 /**
   * Naive findAll - fetches all data for `this`
