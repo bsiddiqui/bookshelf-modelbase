@@ -45,20 +45,6 @@ describe('modelBase', function () {
     });
   })
 
-  describe('parse', function () {
-    it('should convert snake case to camel case', function () {
-      return expect(specimen.parse({ variable_name: 'snake_case' }))
-        .to.eql({ variableName: 'snake_case' })
-    });
-  });
-
-  describe('format', function () {
-    it('should convert camel case to snake case', function () {
-      return expect(specimen.format({ variableName: 'snake_case' }))
-        .to.eql({ variable_name: 'snake_case' })
-    });
-  });
-
   describe('validateSave', function () {
     it('should validate own attributes', function () {
       return expect(specimen.validateSave()).to.contain({
