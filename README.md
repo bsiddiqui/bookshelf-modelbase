@@ -36,7 +36,7 @@ var ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 var User = ModelBase.extend({
   tableName: 'users'
-}, {
+
   // validation is passed to Joi.object(), so use a raw object
   validate: {
     firstName: Joi.string()
