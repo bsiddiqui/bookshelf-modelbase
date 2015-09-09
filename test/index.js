@@ -129,8 +129,8 @@ describe('modelBase', function () {
       .then(function (model) {
         return SpecimenClass.findOne({ id: this.modelId })
       })
-      .then(function (model) {
-        return expect(model).to.eql(null)
+      .catch(function (err) {
+        expect(err.message).to.eql('EmptyResponse')
       })
     })
   })
