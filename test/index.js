@@ -19,7 +19,7 @@ describe('modelBase', function () {
     SpecimenClass = ModelBase.extend({
       tableName: 'test_table',
       validate: {
-        name: Joi.string().valid('hello', 'goodbye')
+        name: Joi.string().valid('hello', 'goodbye', 'yo')
       }
     })
 
@@ -45,6 +45,24 @@ describe('modelBase', function () {
   })
 
   describe('validateSave', function () {
+    it('should allow extended Joi object', function () {
+      SpecimenClass = ModelBase.extend({
+        tableName: 'test_table',
+        validate: Joi.object().keys({
+          name: Joi.string().valid('hello', 'goodbye')
+        })
+      })
+
+      specimen = new SpecimenClass({
+        name: 'hello'
+      })
+
+      return specimen.save()
+      .then(function (model) {
+        expect(model).to.exist()
+      })
+    })
+
     it('should validate own attributes', function () {
       return expect(specimen.validateSave()).to.contain({
         name: 'hello'
@@ -90,29 +108,34 @@ describe('modelBase', function () {
         name: 'hello'
       })
       .then(function (model) {
-        return expect(model.id).to.not.eql(specimen.id)
+        expect(model.id).to.not.eql(specimen.id)
       })
     })
   })
 
   describe('update', function () {
     it('should return a model', function () {
-      return SpecimenClass.forge({
+      expect(specimen.get('name')).to.not.eql('goodbye')
+      return SpecimenClass.update({
         name: 'goodbye'
-      }, { id: specimen.id })
-      .save()
-      .bind({})
-      .then(function (model) {
-        this.modelId = model.id
-        return SpecimenClass.update({
-          name: 'hello'
-        }, { id: this.modelId })
-      })
-      .then(function () {
-        return SpecimenClass.findOne({ id: this.modelId })
+      }, {
+        id: specimen.get('id')
       })
       .then(function (model) {
-        return expect(model.get('name')).to.eql('hello')
+        expect(model.get('id')).to.eql(specimen.get('id'))
+        expect(model.get('name')).to.eql('goodbye')
+      })
+    })
+
+    it('should return if require:false and not found', function () {
+      return SpecimenClass.update({
+        name: 'goodbye'
+      }, {
+        id: -1,
+        require: false
+      })
+      .then(function (model) {
+        expect(model).to.eql(undefined)
       })
     })
   })
@@ -137,15 +160,15 @@ describe('modelBase', function () {
 
   describe('findOrCreate', function () {
     it('should find an existing model', function () {
-      return SpecimenClass.findOrCreate()
+      return SpecimenClass.findOrCreate({ id: specimen.id })
       .then(function (model) {
-        expect(model).to.be.instanceof(SpecimenClass)
+        return expect(model.id).to.eql(specimen.id)
       })
     })
 
     it('should create when model not found', function () {
       return SpecimenClass.findOrCreate({
-        name: 'goodbye'
+        name: 'yo'
       })
       .then(function (model) {
         return expect(model.id).to.not.eql(specimen.id)
