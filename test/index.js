@@ -19,12 +19,13 @@ describe('modelBase', function () {
     SpecimenClass = ModelBase.extend({
       tableName: 'test_table',
       validate: {
-        name: Joi.string().valid('hello', 'goodbye', 'yo')
+        first_name: Joi.string().valid('hello', 'goodbye', 'yo').required(),
+        last_name: Joi.string().allow(null)
       }
     })
 
     specimen = new SpecimenClass({
-      name: 'hello'
+      first_name: 'hello'
     })
 
     return specimen.save()
@@ -49,12 +50,12 @@ describe('modelBase', function () {
       SpecimenClass = ModelBase.extend({
         tableName: 'test_table',
         validate: Joi.object().keys({
-          name: Joi.string().valid('hello', 'goodbye')
+          first_name: Joi.string().valid('hello', 'goodbye')
         })
       })
 
       specimen = new SpecimenClass({
-        name: 'hello'
+        first_name: 'hello'
       })
 
       return specimen.save()
@@ -65,21 +66,38 @@ describe('modelBase', function () {
 
     it('should validate own attributes', function () {
       return expect(specimen.validateSave()).to.contain({
-        name: 'hello'
+        first_name: 'hello'
       })
     })
 
     it('should error on invalid attributes', function () {
-      specimen.set('name', 1)
+      specimen.set('first_name', 1)
       expect(function () {
         specimen.validateSave()
       }).to.throw(/ValidationError/)
+    })
+
+    it('should work with updates method specified', function () {
+      return SpecimenClass
+      .where({ first_name: 'hello' })
+      .save({ last_name: 'world' }, { patch: true, method: 'update', require: false })
+      .then(function (model) {
+        return expect(model.get('last_name')).to.equal('world')
+      })
+    })
+
+    it('should work with model id specified', function () {
+      return SpecimenClass.forge({ id: 1 })
+      .save({ last_name: 'world' }, { patch: true, require: false })
+      .then(function (model) {
+        return expect(model.get('last_name')).to.equal('world')
+      })
     })
   })
 
   describe('constructor', function () {
     it('should itself be extensible', function () {
-      return expect(ModelBase.extend({ tableName: 'test' }))
+      return expect(ModelBase.extend({ tablefirst_name: 'test' }))
         .to.itself.respondTo('extend')
     })
   })
@@ -105,7 +123,7 @@ describe('modelBase', function () {
   describe('create', function () {
     it('should return a model', function () {
       return SpecimenClass.create({
-        name: 'hello'
+        first_name: 'hello'
       })
       .then(function (model) {
         expect(model.id).to.not.eql(specimen.id)
@@ -115,21 +133,21 @@ describe('modelBase', function () {
 
   describe('update', function () {
     it('should return a model', function () {
-      expect(specimen.get('name')).to.not.eql('goodbye')
+      expect(specimen.get('first_name')).to.not.eql('goodbye')
       return SpecimenClass.update({
-        name: 'goodbye'
+        first_name: 'goodbye'
       }, {
         id: specimen.get('id')
       })
       .then(function (model) {
         expect(model.get('id')).to.eql(specimen.get('id'))
-        expect(model.get('name')).to.eql('goodbye')
+        expect(model.get('first_name')).to.eql('goodbye')
       })
     })
 
     it('should return if require:false and not found', function () {
       return SpecimenClass.update({
-        name: 'goodbye'
+        first_name: 'goodbye'
       }, {
         id: -1,
         require: false
@@ -142,9 +160,9 @@ describe('modelBase', function () {
 
   describe('destroy', function () {
     it('should destroy the model', function () {
-      return SpecimenClass.forge({ name: 'hello' })
-      .bind({})
+      return SpecimenClass.forge({ first_name: 'hello' })
       .save()
+      .bind({})
       .then(function (model) {
         this.modelId = model.id
         return SpecimenClass.destroy({ id: this.modelId })
@@ -168,7 +186,7 @@ describe('modelBase', function () {
 
     it('should create when model not found', function () {
       return SpecimenClass.findOrCreate({
-        name: 'yo'
+        first_name: 'yo'
       })
       .then(function (model) {
         return expect(model.id).to.not.eql(specimen.id)
