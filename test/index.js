@@ -5,7 +5,7 @@ var chai = require('chai')
 var expect = chai.expect
 var db = require('./db')
 var bookshelf = require('bookshelf')(db)
-var ModelBase = require('../lib/index')(bookshelf)
+require('../lib/index')(bookshelf)
 
 describe('modelBase', function () {
   var specimen
@@ -16,7 +16,7 @@ describe('modelBase', function () {
   })
 
   beforeEach(function () {
-    SpecimenClass = ModelBase.extend({
+    SpecimenClass = bookshelf.Model.extend({
       tableName: 'test_table',
       validate: {
         first_name: Joi.string().valid('hello', 'goodbye', 'yo').required(),
@@ -39,7 +39,7 @@ describe('modelBase', function () {
     })
 
     it('should default to any validation', function () {
-      specimen = new ModelBase()
+      specimen = new bookshelf.Model()
       expect(specimen.validate.isJoi).to.eql(true)
       expect(specimen.validate._type).to.eql('any')
     })
@@ -47,7 +47,7 @@ describe('modelBase', function () {
 
   describe('validateSave', function () {
     it('should allow extended Joi object', function () {
-      SpecimenClass = ModelBase.extend({
+      SpecimenClass = bookshelf.Model.extend({
         tableName: 'test_table',
         validate: Joi.object().keys({
           first_name: Joi.string().valid('hello', 'goodbye')
@@ -97,7 +97,7 @@ describe('modelBase', function () {
 
   describe('constructor', function () {
     it('should itself be extensible', function () {
-      return expect(ModelBase.extend({ tablefirst_name: 'test' }))
+      return expect(bookshelf.Model.extend({ tablefirst_name: 'test' }))
         .to.itself.respondTo('extend')
     })
   })
