@@ -32,9 +32,9 @@ You can pass in a validation object as a class attribute when you extend
 var db        = require(knex)(require('./knexfile'));
 var bookshelf = require('bookshelf')(db);
 // Pass an initialized bookshelf instance
-var ModelBase = require('bookshelf-modelbase')(bookshelf);
+require('bookshelf-modelbase')(bookshelf);
 
-var User = ModelBase.extend({
+var User = bookshelf.Model.extend({
   tableName: 'users'
 
   // validation is passed to Joi.object(), so use a raw object
