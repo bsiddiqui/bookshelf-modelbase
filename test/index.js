@@ -74,7 +74,7 @@ describe('modelBase', function () {
       specimen.set('first_name', 1)
       expect(function () {
         specimen.validateSave()
-      }).to.throw(/ValidationError/)
+      }).to.throw(/first_name must be a string/)
     })
 
     it('should work with updates method specified', function () {
