@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-modelbase",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Extensible ModelBase for bookshelf-based model layers",
   "main": "./lib",
   "scripts": {
