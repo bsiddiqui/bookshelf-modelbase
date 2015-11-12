@@ -5,7 +5,7 @@ var chai = require('chai')
 var expect = chai.expect
 var db = require('./db')
 var bookshelf = require('bookshelf')(db)
-require('../lib/index')(bookshelf)
+bookshelf.plugin(require('../lib/index'))
 
 describe('modelBase', function () {
   var specimen
@@ -32,12 +32,6 @@ describe('modelBase', function () {
   })
 
   describe('initialize', function () {
-    it('should error if not passed bookshelf object', function () {
-      expect(function () {
-        require('../lib/index')()
-      }).to.throw(/Must pass an initialized bookshelf instance/)
-    })
-
     it('should default to any validation', function () {
       specimen = new bookshelf.Model()
       expect(specimen.validate.isJoi).to.eql(true)
