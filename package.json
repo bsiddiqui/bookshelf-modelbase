@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/bsiddiqui/bookshelf-modelbase",
   "dependencies": {
-    "bookshelf": "^0.8.2",
+    "bookshelf": "^0.9.1",
     "joi": "^5.0.2",
     "lodash.difference": "^3.2.2",
     "xtend": "^4.0.0"
