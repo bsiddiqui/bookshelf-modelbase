@@ -37,12 +37,6 @@ describe('modelBase', function () {
         require('../lib/index')()
       }).to.throw(/Must pass an initialized bookshelf instance/)
     })
-
-    it('should default to any validation', function () {
-      specimen = new ModelBase()
-      expect(specimen.validate.isJoi).to.eql(true)
-      expect(specimen.validate._type).to.eql('any')
-    })
   })
 
   describe('validateSave', function () {
@@ -91,6 +85,15 @@ describe('modelBase', function () {
       .save({ last_name: 'world' }, { patch: true, require: false })
       .then(function (model) {
         return expect(model.get('last_name')).to.equal('world')
+      })
+    })
+
+    it('should not validate when  Model.validate is not present', function () {
+      var Model = ModelBase.extend({ tableName: 'test_table' })
+      return Model.forge({ id: 1 })
+      .save('first_name', 'notYoName')
+      .then(function (model) {
+        return expect(model.get('first_name')).to.equal('notYoName')
       })
     })
   })
