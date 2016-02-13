@@ -189,10 +189,47 @@ describe('modelBase', function () {
 
     it('should create when model not found', function () {
       return SpecimenClass.findOrCreate({
-        first_name: 'yo'
+        first_name: 'yo',
+        last_name: '' + new Date()
       })
       .then(function (model) {
-        return expect(model.id).to.not.eql(specimen.id)
+        expect(model.id).to.not.eql(specimen.id)
+      })
+    })
+  })
+
+  describe('upsert', function () {
+    it('should update if existing model found', function () {
+      return SpecimenClass.create({
+        first_name: 'hello',
+        last_name: 'upsert'
+      })
+      .bind({})
+      .then(function (model) {
+        this.createdModelId = model.id
+        return SpecimenClass.upsert({
+          last_name: 'upsert'
+        }, {
+          last_name: 'success'
+        })
+      })
+      .then(function (model) {
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.equal('success')
+        expect(model.id).to.equal(this.createdModelId)
+      })
+    })
+
+    it('should create if existing model not found', function () {
+      return SpecimenClass.upsert({
+        first_name: 'goodbye',
+        last_name: 'update'
+      }, {
+        last_name: 'updated'
+      })
+      .then(function (model) {
+        expect(model.get('first_name')).to.equal('goodbye')
+        expect(model.get('last_name')).to.equal('updated')
       })
     })
   })
