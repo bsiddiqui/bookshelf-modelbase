@@ -196,6 +196,15 @@ describe('modelBase', function () {
       })
     })
 
+    it('should not apply defaults when model found', function () {
+      return SpecimenClass.findOrCreate({ id: specimen.id }, { defaults: { last_name: 'world' } })
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.be.null()
+      })
+    })
+
     it('should create when model not found', function () {
       return SpecimenClass.findOrCreate({
         first_name: 'hello',
@@ -212,7 +221,7 @@ describe('modelBase', function () {
       return SpecimenClass.findOrCreate({
         last_name: date
       }, {
-        first_name: 'hello'
+        defaults: { first_name: 'hello' }
       })
       .then(function (model) {
         expect(model.id).to.not.eql(specimen.id)
@@ -221,35 +230,17 @@ describe('modelBase', function () {
       })
     })
 
-    it('should work with  defaults and options', function () {
-      var date = '' + new Date()
-
+    it('should work with defaults and options', function () {
       return SpecimenClass.findOrCreate({
-        last_name: date
+        id: specimen.id
       }, {
-        first_name: 'hello'
-      }, {
-        columns: ['first_name', 'last_name']
+        defaults: { last_name: 'hello' },
+        columns: ['id', 'last_name']
       })
       .then(function (model) {
-        expect(model.get('id')).to.equal(undefined)
-        expect(model.get('first_name')).to.equal('hello')
-        expect(model.get('last_name')).to.equal(date)
-      })
-    })
-
-    it('should not apply defaults if model found', function () {
-      var date = '' + new Date()
-
-      return SpecimenClass.findOrCreate({
-        first_name: 'hello'
-      }, {
-        last_name: date
-      })
-      .then(function (model) {
-        expect(model.id).to.not.eql(specimen.id)
-        expect(model.get('first_name')).to.equal('hello')
-        expect(model.get('last_name')).to.not.equal(date)
+        expect(model.get('id')).to.equal(specimen.id)
+        expect(model.get('first_name')).to.be.undefined()
+        expect(model.get('last_name')).to.be.null()
       })
     })
   })
