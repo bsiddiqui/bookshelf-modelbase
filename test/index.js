@@ -183,17 +183,73 @@ describe('modelBase', function () {
     it('should find an existing model', function () {
       return SpecimenClass.findOrCreate({ id: specimen.id })
       .then(function (model) {
-        return expect(model.id).to.eql(specimen.id)
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+      })
+    })
+
+    it('should find with options', function () {
+      return SpecimenClass.findOrCreate({ id: specimen.id }, { columns: 'id' })
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal(undefined)
       })
     })
 
     it('should create when model not found', function () {
       return SpecimenClass.findOrCreate({
-        first_name: 'yo',
+        first_name: 'hello',
         last_name: '' + new Date()
       })
       .then(function (model) {
         expect(model.id).to.not.eql(specimen.id)
+      })
+    })
+
+    it('should apply defaults if creating', function () {
+      var date = '' + new Date()
+
+      return SpecimenClass.findOrCreate({
+        last_name: date
+      }, {
+        first_name: 'hello'
+      })
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.equal(date)
+      })
+    })
+
+    it('should work with  defaults and options', function () {
+      var date = '' + new Date()
+
+      return SpecimenClass.findOrCreate({
+        last_name: date
+      }, {
+        first_name: 'hello'
+      }, {
+        columns: ['first_name', 'last_name']
+      })
+      .then(function (model) {
+        expect(model.get('id')).to.equal(undefined)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.equal(date)
+      })
+    })
+
+    it('should not apply defaults if model found', function () {
+      var date = '' + new Date()
+
+      return SpecimenClass.findOrCreate({
+        first_name: 'hello'
+      }, {
+        last_name: date
+      })
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.not.equal(date)
       })
     })
   })
