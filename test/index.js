@@ -65,10 +65,16 @@ describe('modelBase', function () {
     })
 
     it('should error on invalid attributes', function () {
+      var error
+
       specimen.set('first_name', 1)
-      expect(function () {
+      try {
         specimen.validateSave()
-      }).to.throw(/first_name must be a string/)
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.tableName).to.equal('test_table')
     })
 
     it('should work with updates method specified', function () {
