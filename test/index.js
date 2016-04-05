@@ -1,4 +1,4 @@
-/* global describe, before, beforeEach, it */
+/* global describe, before, after, beforeEach, it */
 
 var Joi = require('joi')
 var chai = require('chai')
@@ -32,10 +32,32 @@ describe('modelBase', function () {
   })
 
   describe('initialize', function () {
+    var origModelBase
+
+    before(function () {
+      origModelBase = bookshelf.Model
+    })
+
+    after(function () {
+      bookshelf.Model = origModelBase
+    })
+
     it('should error if not passed bookshelf object', function () {
       expect(function () {
         require('../lib/index')()
       }).to.throw(/Must pass an initialized bookshelf instance/)
+    })
+    it('should be separately applyable', function () {
+      var Model = require('../lib/index')(bookshelf)
+      expect(Model.findOne).to.be.a('function')
+      expect(bookshelf.Model.findOne).to.be.undefined()
+    })
+    it('should be usable as a bookshelf plugin', function () {
+      expect(bookshelf.Model.findOne).to.be.undefined()
+      bookshelf.plugin(function () {
+        require('../lib/index').pluggable.apply(null, arguments)
+      })
+      expect(bookshelf.Model.findOne).to.be.a('function')
     })
   })
 
