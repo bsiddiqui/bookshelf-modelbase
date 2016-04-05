@@ -33,6 +33,8 @@ var db        = require(knex)(require('./knexfile'));
 var bookshelf = require('bookshelf')(db);
 // Pass an initialized bookshelf instance
 var ModelBase = require('bookshelf-modelbase')(bookshelf);
+// Or initialize as a bookshelf plugin
+bookshelf.plugin(require('bookshelf-modelbase'));
 
 var User = ModelBase.extend({
   tableName: 'users'
