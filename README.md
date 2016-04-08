@@ -109,6 +109,20 @@ findAll: function (options) {
 }
 ```
 
+### model.findById
+
+```javascript
+/**
+ * Find a model based on it's ID
+ * @param {String} id The model's ID
+ * @param {Object} [options] Options used of model.fetch
+ * @return {Promise(bookshelf.Model)}
+ */
+findById: function (id, options) {
+  return this.findOne({ [this.prototype.idAttribute]: id }, options)
+}
+```
+
 #### model.findOne
 
 ```js
