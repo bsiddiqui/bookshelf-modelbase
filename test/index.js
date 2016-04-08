@@ -136,6 +136,20 @@ describe('modelBase', function () {
     })
   })
 
+  describe('findById', function () {
+    it('should find a model by it\'s id', function () {
+      var created
+      return SpecimenClass.create({ first_name: 'yo' })
+      .then(function (model) {
+        created = model
+        return SpecimenClass.findById(model.id)
+      })
+      .then(function (model) {
+        expect(model.id).to.deep.equal(created.id)
+      })
+    })
+  })
+
   describe('findOne', function () {
     it('should return a model', function () {
       return SpecimenClass.findOne()
