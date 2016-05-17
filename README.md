@@ -91,7 +91,7 @@ create: function (data, options) {
   * @return {Promise(bookshelf.Model)} empty Model
   */
 destroy: function (options) {
-  return this.forge({ id: options.id })
+  return this.forge({ [this.prototype.idAttribute]: options.id })
   .destroy(options);
 }
 ```
@@ -168,7 +168,7 @@ update: function (data, options) {
   _.defaults(options, {
     patch: true
   });
-  return this.forge({ id: options.id }).fetch(options)
+  return this.forge({ [this.prototype.idAttribute]: options.id }).fetch(options)
   .then(function (model) {
     if (model) {
       return model.save(data, options);
