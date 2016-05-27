@@ -424,7 +424,6 @@ describe('modelBase', function () {
       })
     })
   })
-  // end alex test
 
   describe('upsert', function () {
     it('should update if existing model found', function () {
