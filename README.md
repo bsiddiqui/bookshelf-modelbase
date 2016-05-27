@@ -109,7 +109,7 @@ findAll: function (options) {
 }
 ```
 
-### model.findById
+#### model.findById
 
 ```javascript
 /**
@@ -154,7 +154,41 @@ findOrCreate: function (data, options) {
   })
 }
 ```
+#### model.findOrCreateById
+```js
+findOrCreateById: function (data, options, id) {
+  return this.findOne({ [this.prototype.idAttribute]: id }, extend(options, { require: false }))
+  .bind(this)
+  .then(function (model) {
+    var defaults = options && options.defaults
+    return model ?
+      model :
+      this.create(extend(defaults, data), options)
+  })
+}
+```
+#### model.findOrCreateByProperty
+```js
 
+/**
+  * Select a model based on data with contents of query and insert if not found
+  * @param {Object} data
+  * @param {Object} [options] Options for model.fetch and model.save
+  * @param {Object} [options.defaults] Defaults to apply to a create
+  * @param {Object} [query]
+  * @return {Promise(bookshelf.Model)} single Model
+  */
+findOrCreateByProperty: function (data, options, query) {
+  return this.findOne(query, extend(options, { require: false }))
+  .bind(this)
+  .then(function (model) {
+    var defaults = options && options.defaults
+    return model ?
+      model :
+      this.create(extend(defaults, data), options)
+  })
+}
+```
 #### model.update
 
 ```js
