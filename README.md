@@ -109,7 +109,7 @@ findAll: function (options) {
 }
 ```
 
-### model.findById
+#### model.findById
 
 ```javascript
 /**
