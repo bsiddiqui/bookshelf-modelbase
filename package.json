@@ -17,19 +17,19 @@
   },
   "homepage": "https://github.com/bsiddiqui/bookshelf-modelbase",
   "dependencies": {
-    "joi": "^5.0.2",
-    "lodash.difference": "^3.2.2",
-    "xtend": "^4.0.0"
+    "joi": "^9.0.4",
+    "lodash.difference": "^4.4.0",
+    "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "bluebird": "^2.10.0",
-    "bookshelf": "^0.9.1",
-    "chai": "^1.10.0",
-    "istanbul": "^0.3.5",
-    "knex": "^0.7.3",
-    "mocha": "^2.0.1",
-    "sinon": "^1.12.1",
-    "sqlite3": "^3.0.4",
-    "standard": "5.0.2"
+    "bluebird": "^3.4.1",
+    "bookshelf": "^0.10.0",
+    "knex": "^0.11.9",
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.0",
+    "sinon": "^1.17.5",
+    "sqlite3": "^3.1.4",
+    "standard": "^7.1.2"
   }
 }
