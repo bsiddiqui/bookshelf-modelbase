@@ -50,10 +50,10 @@ describe('modelBase', function () {
     it('should be separately applyable', function () {
       var Model = require('../lib/index')(bookshelf)
       expect(Model.findOne).to.be.a('function')
-      expect(bookshelf.Model.findOne).to.be.undefined()
+      expect(bookshelf.Model.findOne).to.be.an('undefined')
     })
     it('should be usable as a bookshelf plugin', function () {
-      expect(bookshelf.Model.findOne).to.be.undefined()
+      expect(bookshelf.Model.findOne).to.be.an('undefined')
       bookshelf.plugin(function () {
         require('../lib/index').pluggable.apply(null, arguments)
       })
@@ -76,7 +76,7 @@ describe('modelBase', function () {
 
       return specimen.save()
       .then(function (model) {
-        expect(model).to.exist()
+        expect(model).to.not.be.an('undefined')
       })
     })
 
@@ -243,7 +243,7 @@ describe('modelBase', function () {
       .then(function (model) {
         expect(model.id).to.eql(specimen.id)
         expect(model.get('first_name')).to.equal('hello')
-        expect(model.get('last_name')).to.be.null()
+        expect(model.get('last_name')).to.be.a('null')
       })
     })
 
@@ -281,8 +281,8 @@ describe('modelBase', function () {
       })
       .then(function (model) {
         expect(model.get('id')).to.equal(specimen.id)
-        expect(model.get('first_name')).to.be.undefined()
-        expect(model.get('last_name')).to.be.null()
+        expect(model.get('first_name')).to.be.an('undefined')
+        expect(model.get('last_name')).to.be.a('null')
       })
     })
   })
