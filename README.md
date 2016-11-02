@@ -176,3 +176,23 @@ update: function (data, options) {
   })
 }
 ```
+
+### model.upsert
+```js
+/**
+  * Upsert - select a model based on data and update if found, insert if not found
+  * @param {Object} selectData Data for select
+  * @param {Object} updateData Data for update
+  * @param {Object} [options] Options for model.save
+  * @return {Promise(bookshelf.Model)} edited Model
+  */
+upsert: function (selectData, updateData, options) {
+  return this.findOne(selectData, extend(options, { require: false }))
+  .bind(this)
+  .then(function (model) {
+    return model
+      ? model.save(updateData, extend({ patch: true }, options))
+      : this.create(extend(selectData, updateData), options)
+  })
+}
+```
