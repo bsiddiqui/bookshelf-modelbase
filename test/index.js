@@ -66,7 +66,8 @@ describe('modelBase', function () {
       SpecimenClass = ModelBase.extend({
         tableName: 'test_table',
         validate: Joi.object().keys({
-          first_name: Joi.string().valid('hello', 'goodbye')
+          first_name: Joi.string().valid('hello', 'goodbye'),
+          last_name: Joi.string().default('world')
         })
       })
 
@@ -77,6 +78,7 @@ describe('modelBase', function () {
       return specimen.save()
       .then(function (model) {
         expect(model).to.not.be.an('undefined')
+        expect(model.get('last_name')).to.be.equal('world')
       })
     })
 
