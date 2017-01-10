@@ -323,5 +323,20 @@ describe('modelBase', function () {
         expect(model.get('last_name')).to.equal('updated')
       })
     })
+
+    it('should create even with application assigned id', function () {
+      return SpecimenClass.upsert({
+        id: 0,
+        first_name: 'goodbye',
+        last_name: 'update'
+      }, {
+        last_name: 'updated'
+      })
+      .then(function (model) {
+        expect(model.id).to.equal(0)
+        expect(model.get('first_name')).to.equal('goodbye')
+        expect(model.get('last_name')).to.equal('updated')
+      })
+    })
   })
 })
