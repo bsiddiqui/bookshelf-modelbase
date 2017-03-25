@@ -109,7 +109,7 @@ destroy: function (options) {
  */
 findAll: function (filter, options) {
   return this.forge().where(extend({}, filter)).fetchAll(options);
-}}
+}
 ```
 
 #### model.findById
