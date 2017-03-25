@@ -71,11 +71,11 @@ User.create({ firstName: 'Grayson' })
 
 ```js
 /**
-  * Naive add - create and save a model based on data
-  * @param {Object} data
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Model)} single Model
-  */
+ * Insert a model based on data
+ * @param {Object} data
+ * @param {Object} [options] Options for model.save
+ * @return {Promise(bookshelf.Model)}
+ */
 create: function (data, options) {
   return this.forge(data)
   .save(null, options);
@@ -86,10 +86,12 @@ create: function (data, options) {
 
 ```js
 /**
-  * Naive destroy
-  * @param {Object} options
-  * @return {Promise(bookshelf.Model)} empty Model
-  */
+ * Destroy a model by id
+ * @param {Object} options
+ * @param {String|Integer} options.id The id of the model to destroy
+ * @param {Boolean} [options.require=false]
+ * @return {Promise(bookshelf.Model)} empty model
+ */
 destroy: function (options) {
   return this.forge({ [this.prototype.idAttribute]: options.id })
   .destroy(options);
@@ -100,10 +102,11 @@ destroy: function (options) {
 
 ```javascript
 /**
-  * Naive findAll - fetches all data for `this`
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Collection)} Bookshelf Collection of all Models
-  */
+ * Select a collection based on a query
+ * @param {Object} [query]
+ * @param {Object} [options] Options used of model.fetchAll
+ * @return {Promise(bookshelf.Collection)} Bookshelf Collection of Models
+ */
 findAll: function (options) {
   return bookshelf.Collection.forge([], { model: this }).fetch(options);
 }
@@ -127,11 +130,12 @@ findById: function (id, options) {
 
 ```js
 /**
-  * Naive findOne - fetch data for `this` matching data
-  * @param {Object} data
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Model)} single Model
-  */
+ * Select a model based on a query
+ * @param {Object} [query]
+ * @param {Object} [options] Options for model.fetch
+ * @param {Boolean} [options.require=false]
+ * @return {Promise(bookshelf.Model)}
+ */
 findOne: function (data, options) {
   return this.forge(data).fetch(options);
 }
@@ -140,9 +144,10 @@ findOne: function (data, options) {
 #### model.findOrCreate
 ```js
 /**
-  * Find or create - try and find the model, create one if not found
+  * Select a model based on data and insert if not found
   * @param {Object} data
-  * @param {Object} options
+  * @param {Object} [options] Options for model.fetch and model.save
+  * @param {Object} [options.defaults] Defaults to apply to a create
   * @return {Promise(bookshelf.Model)} single Model
   */
 findOrCreate: function (data, options) {
@@ -159,11 +164,14 @@ findOrCreate: function (data, options) {
 
 ```js
 /**
-  * Naive update - update a model based on data
-  * @param {Object} data
-  * @param {Object} options
-  * @return {Promise(bookshelf.Model)} edited Model
-  */
+ * Update a model based on data
+ * @param {Object} data
+ * @param {Object} options Options for model.fetch and model.save
+ * @param {String|Integer} options.id The id of the model to update
+ * @param {Boolean} [options.patch=true]
+ * @param {Boolean} [options.require=true]
+ * @return {Promise(bookshelf.Model)}
+ *//
 update: function (data, options) {
   _.defaults(options, {
     patch: true
