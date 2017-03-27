@@ -71,14 +71,13 @@ User.create({ firstName: 'Grayson' })
 
 ```js
 /**
-  * Naive add - create and save a model based on data
-  * @param {Object} data
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Model)} single Model
-  */
+ * Insert a model based on data
+ * @param {Object} data
+ * @param {Object} [options] Options for model.save
+ * @return {Promise(bookshelf.Model)}
+ */
 create: function (data, options) {
-  return this.forge(data)
-  .save(null, options);
+  return this.forge(data).save(null, options);
 }
 ```
 
@@ -86,13 +85,16 @@ create: function (data, options) {
 
 ```js
 /**
-  * Naive destroy
-  * @param {Object} options
-  * @return {Promise(bookshelf.Model)} empty Model
-  */
+ * Destroy a model by id
+ * @param {Object} options
+ * @param {String|Integer} options.id The id of the model to destroy
+ * @param {Boolean} [options.require=false]
+ * @return {Promise(bookshelf.Model)} empty model
+ */
 destroy: function (options) {
+  options = extend({ require: true }, options);
   return this.forge({ [this.prototype.idAttribute]: options.id })
-  .destroy(options);
+    .destroy(options);
 }
 ```
 
@@ -100,12 +102,13 @@ destroy: function (options) {
 
 ```javascript
 /**
-  * Naive findAll - fetches all data for `this`
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Collection)} Bookshelf Collection of all Models
-  */
-findAll: function (options) {
-  return bookshelf.Collection.forge([], { model: this }).fetch(options);
+ * Select a collection based on a query
+ * @param {Object} [query]
+ * @param {Object} [options] Options used of model.fetchAll
+ * @return {Promise(bookshelf.Collection)} Bookshelf Collection of Models
+ */
+findAll: function (filter, options) {
+  return this.forge().where(extend({}, filter)).fetchAll(options);
 }
 ```
 
@@ -119,7 +122,7 @@ findAll: function (options) {
  * @return {Promise(bookshelf.Model)}
  */
 findById: function (id, options) {
-  return this.findOne({ [this.prototype.idAttribute]: id }, options)
+  return this.findOne({ [this.prototype.idAttribute]: id }, options);
 }
 ```
 
@@ -127,31 +130,34 @@ findById: function (id, options) {
 
 ```js
 /**
-  * Naive findOne - fetch data for `this` matching data
-  * @param {Object} data
-  * @param {Object} options (optional)
-  * @return {Promise(bookshelf.Model)} single Model
-  */
-findOne: function (data, options) {
-  return this.forge(data).fetch(options);
+ * Select a model based on a query
+ * @param {Object} [query]
+ * @param {Object} [options] Options for model.fetch
+ * @param {Boolean} [options.require=false]
+ * @return {Promise(bookshelf.Model)}
+ */
+findOne: function (query, options) {
+  options = extend({ require: true }, options);
+  return this.forge(query).fetch(options);
 }
 ```
 
 #### model.findOrCreate
 ```js
 /**
-  * Find or create - try and find the model, create one if not found
+  * Select a model based on data and insert if not found
   * @param {Object} data
-  * @param {Object} options
+  * @param {Object} [options] Options for model.fetch and model.save
+  * @param {Object} [options.defaults] Defaults to apply to a create
   * @return {Promise(bookshelf.Model)} single Model
   */
 findOrCreate: function (data, options) {
-  var self = this;
-
-  return self.findOne(data, options)
-  .then(function (model) {
-    return model ? model : self.create(data, options);
-  })
+  return this.findOne(data, extend(options, { require: false }))
+    .bind(this)
+    .then(function (model) {
+      var defaults = options && options.defaults;
+      return model || this.create(extend(defaults, data), options);
+    });
 }
 ```
 
@@ -159,40 +165,44 @@ findOrCreate: function (data, options) {
 
 ```js
 /**
-  * Naive update - update a model based on data
-  * @param {Object} data
-  * @param {Object} options
-  * @return {Promise(bookshelf.Model)} edited Model
-  */
+ * Update a model based on data
+ * @param {Object} data
+ * @param {Object} options Options for model.fetch and model.save
+ * @param {String|Integer} options.id The id of the model to update
+ * @param {Boolean} [options.patch=true]
+ * @param {Boolean} [options.require=true]
+ * @return {Promise(bookshelf.Model)}
+ */
 update: function (data, options) {
-  _.defaults(options, {
-    patch: true
-  });
-  return this.forge({ [this.prototype.idAttribute]: options.id }).fetch(options)
-  .then(function (model) {
-    if (model) {
-      return model.save(data, options);
-    }
-  })
+  options = extend({ patch: true, require: true }, options);
+  return this.forge({ [this.prototype.idAttribute]: options.id }).fetch(options);
+    .then(function (model) {
+      return model ? model.save(data, options) : undefined;
+    });
 }
 ```
 
 ### model.upsert
 ```js
 /**
-  * Upsert - select a model based on data and update if found, insert if not found
-  * @param {Object} selectData Data for select
-  * @param {Object} updateData Data for update
-  * @param {Object} [options] Options for model.save
-  * @return {Promise(bookshelf.Model)} edited Model
-  */
+ * Select a model based on data and update if found, insert if not found
+ * @param {Object} selectData Data for select
+ * @param {Object} updateData Data for update
+ * @param {Object} [options] Options for model.save
+ */
 upsert: function (selectData, updateData, options) {
   return this.findOne(selectData, extend(options, { require: false }))
-  .bind(this)
-  .then(function (model) {
-    return model
-      ? model.save(updateData, extend({ patch: true }, options))
-      : this.create(extend(selectData, updateData), options)
-  })
+    .bind(this)
+    .then(function (model) {
+      return model
+        ? model.save(
+          updateData,
+          extend({ patch: true, method: 'update' }, options)
+        )
+        : this.create(
+          extend(selectData, updateData),
+          extend(options, { method: 'insert' })
+        )
+    });
 }
 ```
