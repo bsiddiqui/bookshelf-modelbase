@@ -182,7 +182,7 @@ update: function (data, options) {
 }
 ```
 
-### model.upsert
+#### model.upsert
 ```js
 /**
  * Select a model based on data and update if found, insert if not found
