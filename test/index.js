@@ -82,6 +82,44 @@ describe('modelBase', function () {
       })
     })
 
+    it('should allow custom validate to baseValidation attributes', function () {
+      SpecimenClass = ModelBase.extend({
+        tableName: 'test_table',
+        validate: {
+          id: Joi.string().default('myID'),
+          first_name: Joi.string().valid('hello', 'goodbye'),
+          last_name: Joi.string().default('world')
+        }
+      })
+
+      specimen = new SpecimenClass({
+        first_name: 'goodbye'
+      })
+
+      return expect(specimen.validateSave()).to.contain({
+        id: 'myID'
+      })
+    })
+
+    it('should allow custom validate to baseValidation attributes when valida is Joi object', function () {
+      SpecimenClass = ModelBase.extend({
+        tableName: 'test_table',
+        validate: Joi.object().keys({
+          id: Joi.string().default('myID'),
+          first_name: Joi.string().valid('hello', 'goodbye'),
+          last_name: Joi.string().default('world')
+        })
+      })
+
+      specimen = new SpecimenClass({
+        first_name: 'goodbye'
+      })
+
+      return expect(specimen.validateSave()).to.contain({
+        id: 'myID'
+      })
+    })
+
     it('should validate own attributes', function () {
       return expect(specimen.validateSave()).to.contain({
         first_name: 'hello'
