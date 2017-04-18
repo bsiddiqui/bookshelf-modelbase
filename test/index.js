@@ -289,6 +289,144 @@ describe('modelBase', function () {
     })
   })
 
+  describe('findOrCreateByProperty', function () {
+    it('should find an existing model', function () {
+      return SpecimenClass.findOrCreateByProperty({ id: specimen.id }, null, { id: specimen.id })
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+      })
+    })
+
+    it('should find with options', function () {
+      return SpecimenClass.findOrCreateByProperty({ id: specimen.id }, { columns: 'id' }, { id: specimen.id })
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal(undefined)
+      })
+    })
+
+    it('should not apply defaults when model found', function () {
+      return SpecimenClass.findOrCreateByProperty({ id: specimen.id }, { defaults: { last_name: 'world' } }, { id: specimen.id })
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.be.null()
+      })
+    })
+
+    it('should create when model not found', function () {
+      return SpecimenClass.findOrCreateByProperty({
+        first_name: 'hello',
+        last_name: '' + new Date()
+      })
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+      })
+    })
+
+    it('should apply defaults if creating', function () {
+      var date = '' + new Date()
+
+      return SpecimenClass.findOrCreateByProperty({
+        last_name: date
+      }, {
+        defaults: { first_name: 'hello'
+      }
+      }, {
+        last_name: date }
+      )
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.equal(date)
+      })
+    })
+
+    it('should work with defaults and options', function () {
+      return SpecimenClass.findOrCreateByProperty({
+        id: specimen.id
+      }, {
+        defaults: { last_name: 'hello' },
+        columns: ['id', 'last_name']
+      }, {
+        id: specimen.id
+      })
+      .then(function (model) {
+        expect(model.get('id')).to.equal(specimen.id)
+        expect(model.get('first_name')).to.be.undefined()
+        expect(model.get('last_name')).to.be.null()
+      })
+    })
+  })
+
+  describe('findOrCreateById', function () {
+    it('should find an existing model', function () {
+      return SpecimenClass.findOrCreateById({ id: specimen.id }, null, specimen.id)
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+      })
+    })
+
+    it('should find with options', function () {
+      return SpecimenClass.findOrCreateById({ id: specimen.id }, { columns: 'id' }, specimen.id)
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal(undefined)
+      })
+    })
+
+    it('should not apply defaults when model found', function () {
+      return SpecimenClass.findOrCreateById({ id: specimen.id }, { defaults: { last_name: 'world' } }, specimen.id)
+      .then(function (model) {
+        expect(model.id).to.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.be.null()
+      })
+    })
+
+    it('should create when model not found', function () {
+      return SpecimenClass.findOrCreateById({
+        first_name: 'hello',
+        last_name: '' + new Date()
+      })
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+      })
+    })
+
+    it('should apply defaults if creating', function () {
+      var date = '' + new Date()
+
+      return SpecimenClass.findOrCreateById({
+        last_name: date
+      }, {
+        defaults: { first_name: 'hello'
+      }
+      })
+      .then(function (model) {
+        expect(model.id).to.not.eql(specimen.id)
+        expect(model.get('first_name')).to.equal('hello')
+        expect(model.get('last_name')).to.equal(date)
+      })
+    })
+
+    it('should work with defaults and options', function () {
+      return SpecimenClass.findOrCreateById({
+        id: specimen.id
+      }, {
+        defaults: { last_name: 'hello' },
+        columns: ['id', 'last_name']
+      }, specimen.id)
+      .then(function (model) {
+        expect(model.get('id')).to.equal(specimen.id)
+        expect(model.get('first_name')).to.be.undefined()
+        expect(model.get('last_name')).to.be.null()
+      })
+    })
+  })
+
   describe('upsert', function () {
     it('should update if existing model found', function () {
       return SpecimenClass.create({
