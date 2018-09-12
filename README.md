@@ -31,6 +31,7 @@ You can pass in a validation object as a class attribute when you extend
 ```javascript
 var db        = require(knex)(require('./knexfile'));
 var bookshelf = require('bookshelf')(db);
+var Joi = require('joi');
 // Pass an initialized bookshelf instance
 var ModelBase = require('bookshelf-modelbase')(bookshelf);
 // Or initialize as a bookshelf plugin
