@@ -176,7 +176,7 @@ findOrCreate: function (data, options) {
  */
 update: function (data, options) {
   options = extend({ patch: true, require: true }, options);
-  return this.forge({ [this.prototype.idAttribute]: options.id }).fetch(options);
+  return this.forge({ [this.prototype.idAttribute]: options.id }).fetch(options)
     .then(function (model) {
       return model ? model.save(data, options) : undefined;
     });
