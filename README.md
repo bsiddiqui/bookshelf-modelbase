@@ -109,7 +109,8 @@ destroy: function (options) {
  * @return {Promise(bookshelf.Collection)} Bookshelf Collection of Models
  */
 findAll: function (filter, options) {
-  return this.forge().where(extend({}, filter)).fetchAll(options);
+  const model = this.forge();
+  return model.where(model.format(extend({}, filter))).fetchAll(options)
 }
 ```
 
