@@ -6,7 +6,8 @@ module.exports = {
     client: 'sqlite3',
     connection: ':memory:',
     pool: {
-      size: 1
+      max: 1,
+      min: 1
     },
     useNullAsDefault: true,
     migrations: {

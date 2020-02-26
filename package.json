@@ -18,15 +18,13 @@
   "homepage": "https://github.com/bsiddiqui/bookshelf-modelbase",
   "dependencies": {
     "joi": "^14.3.1",
-    "lodash.difference": "^4.4.0",
-    "xtend": "^4.0.1"
+    "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
-    "bluebird": "^3.4.1",
-    "bookshelf": "^0.10.0",
-    "knex": "^0.11.9",
+    "bookshelf": "^1.1.0",
     "chai": "^4.2.0",
     "istanbul": "^0.4.4",
+    "knex": "^0.20.10",
     "mocha": "^5.2.0",
     "sinon": "^6.3.4",
     "sqlite3": "^4.0.2",
